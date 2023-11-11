@@ -2,6 +2,8 @@
 import signIn from "@/firebase/auth/signIn";
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
+import Link from 'next/link';
+import Image from 'next/image';
 
 function Page(): JSX.Element {
   const [email, setEmail] = useState('');
@@ -32,6 +34,13 @@ function Page(): JSX.Element {
 
   return (
     <section className="text-gray-600 body-font">
+      <header className="text-gray-600 body-font bg-yellow-100">
+        <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-between">
+          <Link href="/" className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+            <Image src="/notes.png" width={80} height={80} alt="" />
+          </Link>
+        </div>
+      </header>
       <form onSubmit={handleForm} className="container px-5 py-24 mx-auto flex flex-wrap items-center">
         <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
           <h1 className="title-font font-medium text-3xl text-gray-900">Professors make special notes that help students understand tricky stuff better.</h1>
