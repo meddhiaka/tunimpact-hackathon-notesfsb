@@ -6,3 +6,25 @@
 * {
     font-family: 'Inter', sans-serif;
 }
+
+
+
+.note-paper {
+    background-image: url('/notePaper.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* You can add more background properties here if needed. */
+    min-height: 300px; /* Set a minimum height to display content properly */
+    color: white; /* Set text color to contrast with the background */
+    padding: 20px; /* Add some padding for content */
+}
+
+.header-bg {
+    background-image: url('/header.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* You can add more background properties here if needed. */
+
+    color: white; /* Set text color to contrast with the background */
+
+}
