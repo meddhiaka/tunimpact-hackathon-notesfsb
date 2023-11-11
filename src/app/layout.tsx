@@ -1,9 +1,10 @@
 import { AuthContextProvider } from '@/context/AuthContext';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import Footer from '@/components/Footer';
 
 // Load the Inter font with 'latin' subset
-const inter = Inter( { subsets: [ 'latin' ] } );
+const inter = Inter({ subsets: ['latin'] });
 
 // Metadata for the application
 export const metadata = {
@@ -12,7 +13,7 @@ export const metadata = {
 };
 
 // Root layout component for the application
-export default function RootLayout( { children }: { children: React.ReactNode } ): JSX.Element {
+export default function RootLayout({ children }: { children: React.ReactNode }): JSX.Element {
   return (
     <html lang="en">
       {/*
@@ -25,6 +26,7 @@ export default function RootLayout( { children }: { children: React.ReactNode } 
         {/* Wrap the children with the AuthContextProvider to provide authentication context */}
         <AuthContextProvider>
           {children}
+          <Footer />
         </AuthContextProvider>
       </body>
     </html>

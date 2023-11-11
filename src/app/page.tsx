@@ -1,6 +1,6 @@
 
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+
 import Testi from '@/components/Testi'
 
 export default function Home() {
@@ -9,7 +9,6 @@ export default function Home() {
     <main className="min-h-screen">
       <Header />
       <Testi />
-      <Footer />
     </main>
   )
 }
