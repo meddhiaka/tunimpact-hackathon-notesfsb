@@ -9,15 +9,19 @@ import { useState } from 'react'
 import { title } from "process";
 import { addDoc, collection } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
+import { getDatabase, ref, set, get } from "firebase/database";
+
 
 
 export default function Page(): JSX.Element {
+  const [isTeacher, setIsTeacher] = useState(false);
   const { user } = useAuthContext() as { user: any };
   const router = useRouter();
   const [subject, setSubject] = useState('');
   const [teacher, setTeacher] = useState('');
   const [noteText, setNoteText] = useState('');
   const db = getFirestore();
+
 
   function getPartBeforeAlt(str: string) {
     const parts = str.split('@');
@@ -43,9 +47,9 @@ export default function Page(): JSX.Element {
 
   const handleSignOut = () => {
     const auth = getAuth();
+
     signOut(auth)
       .then(() => {
-        // Sign-out successful.
         router.push("/");
       })
       .catch((error) => {
@@ -53,21 +57,40 @@ export default function Page(): JSX.Element {
       });
   };
 
-
   useEffect(() => {
     if (user == null) {
       router.push("/");
     }
   }, [user, router]);
 
+  useEffect(() => {
+    const userUid = user.uid;
+    const db = getDatabase();
+    const userRef = ref(db, 'users/' + userUid);
+
+    get(userRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          console.log(userData)
+          const userIsTeacher = userData.isTeacher;
+          setIsTeacher(userIsTeacher);
+        } else {
+        }
+      })
+      .catch((error) => {
+      });
+  }, []);
+
+
   return (
     <div>
-      <header className="text-gray-600 body-font bg-yellow-100">
+      <header className="text-gray-600 body-font header-bg">
         <div className="container mx-auto flex flex-wrap p-5 flex-row my-auto items-center justify-between">
           <Link href="/" className="flex title-font font-medium items-center text-gray-900 mb-4">
-            <Image src="/notes.png" width={80} height={80} alt="" />
+            <Image src="/notes.png" width={80} height={80} alt="" className='transform scale-150' />
           </Link>
-          <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4" onClick={handleSignOut}>Logout
+          <button className="inline-flex items-center hover:text-gray-900 bg-yellow-600 text-gray-100 border-0 py-1 px-3 rounded cursor-pointer" onClick={handleSignOut}>Logout
             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4 ml-1" viewBox="0 0 24 24">
               <path d="M5 12h14M12 5l7 7-7 7"></path>
             </svg>
@@ -77,15 +100,18 @@ export default function Page(): JSX.Element {
       <div>
         <section className="bg-white dark:bg-gray-900">
           <div className="max-w-6xl px-6 py-10 mx-auto">
-            <p className="text-xl font-medium text-yellow-500 ">Welcome <b>@{userid}</b>, </p>
+            {isTeacher ?
+              (<p className="text-xl font-medium text-yellow-500 ">Hello there <span><b>@{userid}</b></span>, You're logged in as a teacher!</p>)
+              :
+              (<p className="text-xl font-medium text-yellow-500 ">Hello there <span><b>@{userid}</b></span>, You're logged in as a student!</p>)
+            }
 
             <h1 className="mt-2 text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white">
               Welcome to the dedicated page for sharing your notes.
             </h1>
           </div>
         </section>
-      </div>
-
+      </div >
 
       <form className=" max-w-3xl mx-auto m-10 p-10 border-[1px] border-yellow-500 rounded-md" onSubmit={handleNote}>
         <div className="space-y-12">
@@ -142,6 +168,7 @@ export default function Page(): JSX.Element {
                     id="note"
                     name="note"
                     rows={5}
+                    placeholder="ex. 3andi mochkla fel matiere X..."
                     className="block w-full rounded-md border-0 py-1.5 p-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-600 sm:text-sm sm:leading-6"
                     defaultValue={''}
                   />
@@ -161,6 +188,6 @@ export default function Page(): JSX.Element {
           </button>
         </div>
       </form>
-    </div>
+    </div >
   );
 }

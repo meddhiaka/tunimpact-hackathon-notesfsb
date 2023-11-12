@@ -10,6 +10,7 @@ import Image from 'next/image';
 function Page(): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isTeacher, setIsTeacher] = useState(false);
   const router = useRouter();
 
   // Handle form submission
@@ -21,6 +22,7 @@ function Page(): JSX.Element {
     const db = getDatabase();
     set(ref(db, 'users/' + result.user.uid), {
       email: email,
+      isTeacher: isTeacher
     });
 
     if (error) {
@@ -37,9 +39,9 @@ function Page(): JSX.Element {
   }
 
   return (
-    <section className="text-gray-600 body-font">
+    <section className="text-gray-600 ">
 
-      <header className="text-gray-600 body-font bg-yellow-100">
+      <header className="text-gray-600  header-bg">
         <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-between">
           <Link href="/" className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
             <Image src="/notes.png" width={80} height={80} alt="" />
@@ -61,6 +63,47 @@ function Page(): JSX.Element {
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">Password</label>
             <input onChange={(e) => setPassword(e.target.value)} required type="password" name="password" id="password" placeholder="password" className="w-full bg-white rounded border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
           </div>
+          <div className="m-5 space-y-10">
+            <fieldset>
+              <div className="mt-6 space-y-6">
+                <div className="relative flex gap-x-3">
+                  <div className="flex h-6 items-center">
+                    <input
+                      id="teacher"
+                      name="teacher"
+                      type="checkbox"
+                      onChange={(e) => setIsTeacher(true)}
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    />
+                  </div>
+                  <div className="text-sm leading-6">
+                    <label htmlFor="teacher" className="font-medium text-gray-900">
+                      Teacher
+                    </label>
+                    <p className="text-gray-500">Choosing this option makes you a teacher.</p>
+                  </div>
+                </div>
+                <div className="relative flex gap-x-3">
+                  <div className="flex h-6 items-center">
+                    <input
+                      id="offers"
+                      name="offers"
+                      type="checkbox"
+                      onChange={(e) => setIsTeacher(false)}
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    />
+                  </div>
+                  <div className="text-sm leading-6">
+                    <label htmlFor="offers" className="font-medium text-gray-900">
+                      Student
+                    </label>
+                    <p className="text-gray-500">Choosing this option makes you a student.</p>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
           <button className="text-white bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg" type="submit">Sign Up</button>
           <p className="text-xs text-gray-500 mt-3">Education is learning for growth and progress.</p>
         </div>

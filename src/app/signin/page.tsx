@@ -33,11 +33,11 @@ function Page(): JSX.Element {
   }
 
   return (
-    <section className="text-gray-600 body-font">
-      <header className="text-gray-600 body-font bg-yellow-100">
+    <section className="text-gray-600 ">
+      <header className="text-gray-600  header-bg">
         <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-between">
           <Link href="/" className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-            <Image src="/notes.png" width={80} height={80} alt="" />
+            <Image src="/notes.png" width={80} height={80} alt="" className='transform scale-150' />
           </Link>
         </div>
       </header>
