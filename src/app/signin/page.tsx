@@ -36,7 +36,7 @@ function Page(): JSX.Element {
       </header>
       <form onSubmit={handleForm} className="container px-5 py-24 mx-auto flex flex-wrap items-center">
         <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
-          <h1 className="title-font font-medium text-3xl text-gray-900">Professors make special notes that help students understand tricky stuff better.</h1>
+          <h1 className="title-font font-medium text-3xl text-gray-900">Students write down their problems in a beautiful note, and then teachers come to assist them with their homework, for example.</h1>
           <p className="leading-relaxed mt-4">These notes are like a map that shows the way to do well in school.</p>
         </div>
         <div className="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">

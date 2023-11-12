@@ -4,9 +4,15 @@ import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import Link from 'next/link';
 import Image from 'next/image';
+import { useAuthContext } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { getAuth, signOut } from "firebase/auth"; // Import Firebase Auth functions
 
 export default function Page() {
     const [notes, setNotes] = useState([]);
+    const router = useRouter();
+    const { user } = useAuthContext() as { user: any };
+
 
     useEffect(() => {
         const q = query(collection(getFirestore(), "notes"));
@@ -19,6 +25,25 @@ export default function Page() {
             console.log(notes)
         })
     }, []);
+
+    useEffect(() => {
+        if (user == null) {
+            router.push("/");
+        }
+    }, [user, router]);
+
+    const handleSignOut = () => {
+        const auth = getAuth();
+
+        signOut(auth)
+            .then(() => {
+                router.push("/");
+            })
+            .catch((error) => {
+                console.error("Error signing out:", error);
+            });
+    };
+
     return (
         <div className="mx-auto max-w-6xl w-full m-1">
             <header className="text-gray-600 header-bg ">
@@ -26,6 +51,8 @@ export default function Page() {
                     <Link href="/" className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
                         <Image src="/notes.png" width={80} height={80} alt="" className='transform scale-150' />
                     </Link>
+                    <button className="inline-flex items-center hover:text-gray-900 bg-yellow-600 text-gray-100 border-0 py-1 px-3 rounded cursor-pointer" onClick={handleSignOut}>Logout
+                    </button>
                 </div>
             </header>
             <div className='border-[1px] border-yellow-500 border-opacity-40 rounded-md mt-2 flex flex-row gap-x-6 flex-wrap justify-center py-7'>

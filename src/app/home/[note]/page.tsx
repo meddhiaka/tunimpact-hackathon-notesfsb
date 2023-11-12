@@ -8,17 +8,26 @@ import { doc, updateDoc, } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import { useAuthContext } from "@/context/AuthContext";
 import { getDatabase, ref, set, get } from "firebase/database";
-import { getDocs } from "firebase/firestore";
+import { getAuth, signOut } from "firebase/auth";
+import { useRouter } from "next/navigation";
+
 
 
 
 export default function page() {
+    const { user } = useAuthContext() as { user: any };
+    const router = useRouter();
     const [isTeacher, setIsTeacher] = useState(false);
     const [note, setNote] = useState([]);
     const pathname = usePathname();
     const id = extractPartAfterSecondSlash(pathname);
     const [comment, setComment] = useState('');
-    const { user } = useAuthContext() as { user: any };
+
+    useEffect(() => {
+        if (user == null) {
+            router.push("/");
+        }
+    }, [user, router]);
 
 
 
@@ -92,13 +101,27 @@ export default function page() {
     }
     console.log(note.comments)
 
+    const handleSignOut = () => {
+        const auth = getAuth();
+
+        signOut(auth)
+            .then(() => {
+                router.push("/");
+            })
+            .catch((error) => {
+                console.error("Error signing out:", error);
+            });
+    };
+
     return (
         <div>
-            <header className="text-gray-600  header-bg">
+            <header className="text-gray-600 header-bg ">
                 <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-between">
                     <Link href="/" className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-                        <Image src="/notes.png" width={80} height={80} alt="" className="transform scale-150" />
+                        <Image src="/notes.png" width={80} height={80} alt="" className='transform scale-150' />
                     </Link>
+                    <button className="inline-flex items-center hover:text-gray-900 bg-yellow-600 text-gray-100 border-0 py-1 px-3 rounded cursor-pointer" onClick={handleSignOut}>Logout
+                    </button>
                 </div>
             </header>
             <div className='border-[1px] border-yellow-500 border-opacity-40 rounded-md mt-2 flex flex-row gap-x-6 flex-wrap justify-center py-7 mx-8'>
@@ -117,7 +140,7 @@ export default function page() {
             <section className="bg-white dark:bg-gray-900 py-8 lg:py-16">
                 <div className="max-w-2xl mx-auto px-4">
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion (20)</h2>
+                        <h2 className="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion ({note.comments ? note.comments.length : 0})</h2>
                     </div>
 
                     <form className="mb-6" onSubmit={addComment}>
