@@ -5,9 +5,9 @@ import { getFirestore } from "firebase/firestore";
 import Link from 'next/link';
 import Image from 'next/image';
 
-
 export default function Page() {
     const [notes, setNotes] = useState([]);
+
     useEffect(() => {
         const q = query(collection(getFirestore(), "notes"));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -31,22 +31,23 @@ export default function Page() {
             <div className='border-[1px] border-yellow-500 border-opacity-40 rounded-md mt-2 flex flex-row gap-x-6 flex-wrap justify-center py-7'>
                 {
                     notes.map((note) => (
-                        <div className="note-paper w-72 relative">
+                        <div className="note-paper w-72 h-full relative">
+
+                            <h1 className="pt-10 text-yellow-800 px-1"><b>Published by <i><span className='text-yellow-600'>{note.userid}</span></i> </b> </h1>
+                            <h1 className="pt-5 text-yellow-800 px-2"><b>Subject Name: <span className='text-yellow-600'>{note.subject}</span></b> </h1>
+                            <h1 className="pt-2 text-yellow-800 px-3"><b>Teacher Name: <span className='text-yellow-600'>{note.teacher}</span></b> </h1>
+                            <h1 className="pt-2 text-yellow-800 w-72 px-5" style={{ wordWrap: 'break-word' }}><b>Note Details: <span className='text-yellow-600'>{note.noteText}</span></b> </h1>
+                            {/* <span
+                                className="px-2.5 mx-4 mt-4 absolute bottom-4 inline-flex items-center justify-center rounded-full bg-yellow-900 py-0.5 text-white font-medium   "
+                            >
+                                <p className="whitespace-nowrap text-sm text-white font-semibold cursor-pointer hover:text-yellow-500 ">+ 0</p>
+                            </span> */}
                             <span
-                                className="px-2.5 mx-4 absolute top-28 inline-flex items-center justify-center rounded-full bg-yellow-900 py-0.5 text-white font-medium"
+                                className="px-2.5 mx-4 absolute bottom-[-15px] inline-flex items-center justify-center rounded-full bg-yellow-900 py-0.5 text-white font-medium"
                             >
                                 <Link href={`/home/${note.id}`}>
                                     <p className="whitespace-nowrap text-lg text-white font-medium  hover:text-yellow-500  cursor-pointer">See the discussion</p>
                                 </Link>
-                            </span>
-                            <h1 className="pt-14 text-yellow-800 px-1"><b>Published by <span className='text-yellow-600'>{note.userid}</span> </b> </h1>
-                            <h1 className="pt-14 text-yellow-800 px-2"><b>Subject Name: <span className='text-yellow-600'>{note.subject}</span></b> </h1>
-                            <h1 className="pt-2 text-yellow-800 px-3"><b>Teacher Name: <span className='text-yellow-600'>{note.teacher}</span></b> </h1>
-                            <h1 className="pt-2 text-yellow-800 w-72 px-5" style={{ wordWrap: 'break-word' }}><b>Note Details: <span className='text-yellow-600'>{note.noteText}</span></b> </h1>
-                            <span
-                                className="px-2.5 mx-4 mt-4 absolute bottom-4 inline-flex items-center justify-center rounded-full bg-yellow-900 py-0.5 text-white font-medium   "
-                            >
-                                <p className="whitespace-nowrap text-sm text-white font-semibold cursor-pointer hover:text-yellow-500 ">+ 0</p>
                             </span>
                         </div>
                     ))
@@ -55,11 +56,3 @@ export default function Page() {
         </div>
     )
 }
-
-
-
-
-
-
-
-

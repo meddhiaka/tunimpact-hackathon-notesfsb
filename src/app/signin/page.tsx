@@ -10,25 +10,18 @@ function Page(): JSX.Element {
   const [password, setPassword] = useState('');
   const router = useRouter();
 
-  // Handle form submission
   const handleForm = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    // Attempt to sign in with provided email and password
     const { result, error } = await signIn(email, password);
 
     if (error) {
-      // Display and log any sign-in errors
       console.log(error);
       return;
     }
 
-    // Sign in successful
     console.log(result);
 
-    // Redirect to the admin page
-    // Typically you would want to redirect them to a protected page an add a check to see if they are admin or 
-    // create a new page for admin
     router.push("/notes");
   }
 
@@ -54,7 +47,7 @@ function Page(): JSX.Element {
           </div>
           <div className="relative mb-4">
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">Password</label>
-            <input onChange={(e) => setPassword(e.target.value)} required type="password" name="password" id="password" placeholder="password" className="w-full bg-white rounded border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+            <input onChange={(e) => setPassword(e.target.value)} minLength="6" required type="password" name="password" id="password" placeholder="password" className="w-full bg-white rounded border border-gray-300 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
           </div>
           <button className="text-white bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg" type="submit">Sign In</button>
           <p className="text-xs text-gray-500 mt-3">Education is learning for growth and progress.</p>
